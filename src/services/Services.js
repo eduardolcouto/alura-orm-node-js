@@ -38,6 +38,10 @@ class Services {
         return dataSource[this.model].destroy({ where: { id: id } });
     }
 
+   async pegaUmRegistro(where) {
+        return dataSource[this.model].findOne({ where: { ...where } });
+    }
+
 }
 
 module.exports = Services;

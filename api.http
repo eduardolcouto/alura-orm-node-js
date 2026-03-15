@@ -1,0 +1,181 @@
+### API Escola - ORM com Node.js
+### Documentação: http://localhost:3000/api-docs/
+
+@baseUrl = http://localhost:3000
+
+
+# ──────────────────────────────────────────
+# PESSOAS
+# ──────────────────────────────────────────
+
+### Lista todas as pessoas ativas
+GET {{baseUrl}}/pessoas
+Accept: application/json
+
+###
+
+### Lista todas as pessoas (incluindo inativas)
+GET {{baseUrl}}/pessoas/todos
+Accept: application/json
+
+###
+
+### Busca uma pessoa pelo ID
+GET {{baseUrl}}/pessoas/2
+Accept: application/json
+
+###
+
+### Cria uma nova pessoa
+POST {{baseUrl}}/pessoas
+Content-Type: application/json
+
+{
+  "nome": "João Silva",
+  "email": "joao@email.com",
+  "cpf": "52998224725",
+  "ativo": true,
+  "role": "estudante"
+}
+
+###
+
+### Atualiza os dados de uma pessoa
+PUT {{baseUrl}}/pessoas/2
+Content-Type: application/json
+
+{
+  "nome": "João Silva Atualizado",
+  "email": "joao.novo@email.com",
+  "cpf": "52998224725",
+  "ativo": true,
+  "role": "estudante"
+}
+
+###
+
+### Exclui uma pessoa (soft delete)
+DELETE {{baseUrl}}/pessoas/2
+Accept: application/json
+
+
+# ──────────────────────────────────────────
+# MATRÍCULAS (por estudante)
+# ──────────────────────────────────────────
+
+### Lista as matrículas ativas de um estudante
+GET {{baseUrl}}/pessoas/2/matriculas
+Accept: application/json
+
+###
+
+GET {{baseUrl}}/pessoas/2/matriculas/4
+Accept: application/json
+
+###
+
+### Lista todas as matrículas de um estudante
+GET {{baseUrl}}/pessoas/2/matriculas/todos
+Accept: application/json
+
+###
+
+### Cria uma matrícula para um estudante
+POST {{baseUrl}}/pessoas/2/matriculas
+Content-Type: application/json
+
+{
+  "status": "matriculado",
+  "curso_id": 1,
+  "estudante_id": 1
+}
+
+
+# ──────────────────────────────────────────
+# CURSOS
+# ──────────────────────────────────────────
+
+### Lista todos os cursos
+GET {{baseUrl}}/cursos
+Accept: application/json
+
+###
+
+### Busca um curso pelo ID
+GET {{baseUrl}}/cursos/1
+Accept: application/json
+
+###
+
+### Cria um novo curso
+POST {{baseUrl}}/cursos
+Content-Type: application/json
+
+{
+  "titulo": "Node.js do Zero",
+  "descricao": "Aprenda Node.js com Express e Sequelize",
+  "data_inicio": "2025-01-15",
+  "categoria_id": 1,
+  "docente_id": 2
+}
+
+###
+
+### Atualiza um curso
+PUT {{baseUrl}}/cursos/1
+Content-Type: application/json
+
+{
+  "titulo": "Node.js Avançado",
+  "descricao": "Aprofunde seus conhecimentos em Node.js",
+  "data_inicio": "2025-03-01",
+  "categoria_id": 1,
+  "docente_id": 2
+}
+
+###
+
+### Exclui um curso (soft delete)
+DELETE {{baseUrl}}/cursos/1
+Accept: application/json
+
+
+# ──────────────────────────────────────────
+# CATEGORIAS
+# ──────────────────────────────────────────
+
+### Lista todas as categorias
+GET {{baseUrl}}/categorias
+Accept: application/json
+
+###
+
+### Busca uma categoria pelo ID
+GET {{baseUrl}}/categorias/1
+Accept: application/json
+
+###
+
+### Cria uma nova categoria
+POST {{baseUrl}}/categorias
+Content-Type: application/json
+
+{
+  "titulo": "Back-end"
+}
+
+###
+
+### Atualiza uma categoria
+PUT {{baseUrl}}/categorias/1
+Content-Type: application/json
+
+{
+  "titulo": "Back-end Avançado"
+}
+
+###
+
+### Exclui uma categoria (soft delete)
+DELETE {{baseUrl}}/categorias/1
+Accept: application/json

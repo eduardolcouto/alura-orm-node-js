@@ -97,6 +97,7 @@ const options = {
                     properties: {
                         status: { type: 'string', example: 'matriculado' },
                         curso_id: { type: 'integer', example: 1 },
+                        estudante_id: { type: 'integer', example: 1 },
                     },
                 },
                 Error: {

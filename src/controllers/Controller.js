@@ -1,4 +1,5 @@
-
+const convertIds = require('../utils/conversorDeStringHelper.js');
+const convertToSnakeCase = require('../utils/convertToSnakeCaseHelper.js');
 class Controller {
     constructor(service) {
         this.entidadeService = service;
@@ -61,6 +62,19 @@ class Controller {
             return res.status(500).json(error.message);
         }
     }
+
+    async pegaUm(req, res) {
+        const { ...params } = (req.params);
+        const where = convertToSnakeCase(convertIds(params));
+  
+        try {
+            const umRegistro = await this.entidadeService.pegaUmRegistro(where);
+            return res.status(200).json(umRegistro);
+        } catch (error) {
+             return res.status(500).json({ error: error.message });
+        }
+    }
+ 
 
 }
 

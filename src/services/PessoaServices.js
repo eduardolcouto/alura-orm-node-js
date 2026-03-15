@@ -5,7 +5,7 @@ class PessoaServices extends Services {
         super('Pessoa');
     }
 
-    async pegaMatriculasPorEstudante(id) {
+    async pegaMatriculasAtivasPorEstudante(id) {
 
         const pessoa = await super.pegaUmRegistroPorId(id);
         if (!pessoa) {
@@ -15,6 +15,18 @@ class PessoaServices extends Services {
         return matriculas;
 
     }
+
+    async pegaTodasAsMatriculasPorEstudante(id) {
+
+        const pessoa = await super.pegaUmRegistroPorId(id);
+        if (!pessoa) {
+            throw new Error('Pessoa não encontrada');
+        }
+        const matriculas = await pessoa.getTodasAsMatriculas();
+        return matriculas;
+
+    }
+
     async pegaPessoasTodos() {
         const listaDePessoas = await super.pegaRegistrosPorScopo('todosOsRegistros');
         return listaDePessoas;

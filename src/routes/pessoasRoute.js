@@ -179,7 +179,7 @@ router.delete('/pessoas/:id', (req, res) => pessoaController.exclui(req, res));
  * @swagger
  * /pessoas/{estudanteId}/matriculas:
  *   get:
- *     summary: Lista as matrículas de um estudante
+ *     summary: Lista as matrículas ativas de um estudante
  *     tags: [Pessoas]
  *     parameters:
  *       - in: path
@@ -190,7 +190,7 @@ router.delete('/pessoas/:id', (req, res) => pessoaController.exclui(req, res));
  *         description: ID do estudante
  *     responses:
  *       200:
- *         description: Lista de matrículas do estudante
+ *         description: Lista de matrículas com status "matriculado"
  *         content:
  *           application/json:
  *             schema:
@@ -233,7 +233,73 @@ router.delete('/pessoas/:id', (req, res) => pessoaController.exclui(req, res));
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.get('/pessoas/:estudanteId/matriculas', (req, res) => pessoaController.pegaMatriculas(req, res));
+
+/**
+ * @swagger
+ * /pessoas/{estudanteId}/matriculas/todos:
+ *   get:
+ *     summary: Lista todas as matrículas de um estudante (todos os status)
+ *     tags: [Pessoas]
+ *     parameters:
+ *       - in: path
+ *         name: estudanteId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do estudante
+ *     responses:
+ *       200:
+ *         description: Lista completa de matrículas do estudante
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Matricula'
+ *       500:
+ *         description: Erro interno
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+
+/**
+ * @swagger
+ * /pessoas/{estudanteId}/matriculas/{id}:
+ *   get:
+ *     summary: Busca uma matrícula pelo ID
+ *     tags: [Pessoas]
+ *     parameters:
+ *       - in: path
+ *         name: estudanteId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do estudante
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID da matrícula
+ *     responses:
+ *       200:
+ *         description: Dados da matrícula
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Matricula'
+ *       500:
+ *         description: Erro interno
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+router.get('/pessoas/:estudanteId/matriculas', (req, res) => pessoaController.pegaMatriculasAtivas(req, res));
+router.get('/pessoas/:estudanteId/matriculas/todos', (req, res) => pessoaController.pegaTodasAsMatriculas(req, res));
+router.get('/pessoas/:estudanteId/matriculas/:id', (req, res) => matriculaController.pegaUm(req, res));
 router.post('/pessoas/:estudanteId/matriculas', (req, res) => matriculaController.criaNovo(req, res));
 
 module.exports = router;
