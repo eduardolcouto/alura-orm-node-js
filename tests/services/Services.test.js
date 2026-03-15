@@ -6,6 +6,7 @@ jest.mock('../../src/database/models', () => ({
         findAll: jest.fn(),
         scope: jest.fn(),
         findByPk: jest.fn(),
+        findOne: jest.fn(),
         create: jest.fn(),
         update: jest.fn(),
         destroy: jest.fn(),
@@ -110,6 +111,28 @@ describe('Services', () => {
             await service.excluiRegistro(1);
 
             expect(dataSource.Pessoa.destroy).toHaveBeenCalledWith({ where: { id: 1 } });
+        });
+    });
+
+    describe('pegaUmRegistro', () => {
+        it('deve chamar findOne com o where fornecido', async () => {
+            const registroMock = { id: 2, estudante_id: 1 };
+            dataSource.Pessoa.findOne.mockResolvedValue(registroMock);
+
+            const resultado = await service.pegaUmRegistro({ estudante_id: 1, id: 2 });
+
+            expect(dataSource.Pessoa.findOne).toHaveBeenCalledWith({
+                where: { estudante_id: 1, id: 2 },
+            });
+            expect(resultado).toEqual(registroMock);
+        });
+
+        it('deve retornar null quando nenhum registro é encontrado', async () => {
+            dataSource.Pessoa.findOne.mockResolvedValue(null);
+
+            const resultado = await service.pegaUmRegistro({ estudante_id: 99, id: 99 });
+
+            expect(resultado).toBeNull();
         });
     });
 });

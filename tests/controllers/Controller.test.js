@@ -3,6 +3,7 @@ const Controller = require('../../src/controllers/Controller');
 const mockService = {
     pegaTodosOsRegistros: jest.fn(),
     pegaUmRegistroPorId: jest.fn(),
+    pegaUmRegistro: jest.fn(),
     criaRegistro: jest.fn(),
     atualizaRegistro: jest.fn(),
     excluiRegistro: jest.fn(),
@@ -159,6 +160,36 @@ describe('Controller', () => {
             await controller.exclui(req, res);
 
             expect(res.status).toHaveBeenCalledWith(500);
+        });
+    });
+
+    describe('pegaUm', () => {
+        it('deve converter params para snake_case com IDs numéricos e chamar pegaUmRegistro', async () => {
+            const matriculaMock = { id: 2, estudante_id: 1, status: 'matriculado' };
+            mockService.pegaUmRegistro.mockResolvedValue(matriculaMock);
+            // estudanteId → estudante_id (snake_case) e id permanecem como números
+            const req = mockReq({ estudanteId: '1', id: '2' });
+            const res = mockRes();
+
+            await controller.pegaUm(req, res);
+
+            expect(mockService.pegaUmRegistro).toHaveBeenCalledWith({
+                estudante_id: 1,
+                id: 2,
+            });
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith(matriculaMock);
+        });
+
+        it('deve responder com status 500 quando o service lançar erro', async () => {
+            mockService.pegaUmRegistro.mockRejectedValue(new Error('Registro não encontrado'));
+            const req = mockReq({ estudanteId: '1', id: '99' });
+            const res = mockRes();
+
+            await controller.pegaUm(req, res);
+
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.json).toHaveBeenCalledWith({ error: 'Registro não encontrado' });
         });
     });
 });

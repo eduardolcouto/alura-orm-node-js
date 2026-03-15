@@ -1,5 +1,6 @@
 const mockPessoaServicesInstance = {
-    pegaMatriculasPorEstudante: jest.fn(),
+    pegaMatriculasAtivasPorEstudante: jest.fn(),
+    pegaTodasAsMatriculasPorEstudante: jest.fn(),
     pegaPessoasTodos: jest.fn(),
     pegaTodosOsRegistros: jest.fn(),
     pegaUmRegistroPorId: jest.fn(),
@@ -33,28 +34,59 @@ describe('PessoaController', () => {
         jest.clearAllMocks();
     });
 
-    describe('pegaMatriculas', () => {
-        it('deve responder com status 200 e as matrículas do estudante', async () => {
+    describe('pegaMatriculasAtivas', () => {
+        it('deve responder com status 200 e as matrículas ativas do estudante', async () => {
             const matriculas = [{ id: 1, status: 'matriculado' }];
-            mockPessoaServicesInstance.pegaMatriculasPorEstudante.mockResolvedValue(matriculas);
+            mockPessoaServicesInstance.pegaMatriculasAtivasPorEstudante.mockResolvedValue(matriculas);
             const req = { params: { estudanteId: '1' } };
             const res = mockRes();
 
-            await controller.pegaMatriculas(req, res);
+            await controller.pegaMatriculasAtivas(req, res);
 
-            expect(mockPessoaServicesInstance.pegaMatriculasPorEstudante).toHaveBeenCalledWith(1);
+            expect(mockPessoaServicesInstance.pegaMatriculasAtivasPorEstudante).toHaveBeenCalledWith(1);
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.json).toHaveBeenCalledWith(matriculas);
         });
 
         it('deve responder com status 500 quando o estudante não é encontrado', async () => {
-            mockPessoaServicesInstance.pegaMatriculasPorEstudante.mockRejectedValue(
+            mockPessoaServicesInstance.pegaMatriculasAtivasPorEstudante.mockRejectedValue(
                 new Error('Pessoa não encontrada')
             );
             const req = { params: { estudanteId: '999' } };
             const res = mockRes();
 
-            await controller.pegaMatriculas(req, res);
+            await controller.pegaMatriculasAtivas(req, res);
+
+            expect(res.status).toHaveBeenCalledWith(500);
+            expect(res.json).toHaveBeenCalledWith({ error: 'Pessoa não encontrada' });
+        });
+    });
+
+    describe('pegaTodasAsMatriculas', () => {
+        it('deve responder com status 200 e todas as matrículas do estudante', async () => {
+            const matriculas = [
+                { id: 1, status: 'matriculado' },
+                { id: 2, status: 'concluido' },
+            ];
+            mockPessoaServicesInstance.pegaTodasAsMatriculasPorEstudante.mockResolvedValue(matriculas);
+            const req = { params: { estudanteId: '1' } };
+            const res = mockRes();
+
+            await controller.pegaTodasAsMatriculas(req, res);
+
+            expect(mockPessoaServicesInstance.pegaTodasAsMatriculasPorEstudante).toHaveBeenCalledWith(1);
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith(matriculas);
+        });
+
+        it('deve responder com status 500 quando o estudante não é encontrado', async () => {
+            mockPessoaServicesInstance.pegaTodasAsMatriculasPorEstudante.mockRejectedValue(
+                new Error('Pessoa não encontrada')
+            );
+            const req = { params: { estudanteId: '999' } };
+            const res = mockRes();
+
+            await controller.pegaTodasAsMatriculas(req, res);
 
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith({ error: 'Pessoa não encontrada' });
