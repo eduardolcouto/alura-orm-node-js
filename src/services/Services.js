@@ -1,4 +1,4 @@
-const dataSource = require('../models');
+const dataSource = require('../database/models');
 
 class Services {
     constructor(model) {
@@ -7,6 +7,10 @@ class Services {
 
     async pegaTodosOsRegistros() {
         return dataSource[this.model].findAll();
+    }
+
+    async pegaRegistrosPorScopo(escopo) {
+        return dataSource[this.model].scope(escopo).findAll();
     }
 
     async pegaUmRegistroPorId(id) {
