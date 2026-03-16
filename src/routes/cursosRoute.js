@@ -18,6 +18,21 @@ const router = Router();
  *   get:
  *     summary: Lista todos os cursos
  *     tags: [Cursos]
+ *     parameters:
+ *       - in: query
+ *         name: data_inicial
+ *         schema:
+ *           type: string
+ *           format: date
+ *           example: '2021-01-01'
+ *         description: Filtra cursos com data_inicio maior ou igual a esta data (YYYY-MM-DD)
+ *       - in: query
+ *         name: data_final
+ *         schema:
+ *           type: string
+ *           format: date
+ *           example: '2021-12-31'
+ *         description: Filtra cursos com data_inicio menor ou igual a esta data (YYYY-MM-DD)
  *     responses:
  *       200:
  *         description: Lista de cursos
