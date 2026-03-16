@@ -266,6 +266,42 @@ router.delete('/pessoas/:id', (req, res) => pessoaController.exclui(req, res));
 
 /**
  * @swagger
+ * /pessoas/{estudanteId}/matriculas/confirmadas:
+ *   get:
+ *     summary: Lista matrículas confirmadas de um estudante com contagem
+ *     tags: [Pessoas]
+ *     parameters:
+ *       - in: path
+ *         name: estudanteId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do estudante
+ *     responses:
+ *       200:
+ *         description: Objeto com contagem e lista das matrículas com status "matriculado"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 count:
+ *                   type: integer
+ *                   description: Total de matrículas confirmadas
+ *                 rows:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Matricula'
+ *       500:
+ *         description: Erro interno
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+
+/**
+ * @swagger
  * /pessoas/{estudanteId}/matriculas/{id}:
  *   get:
  *     summary: Busca uma matrícula pelo ID
@@ -299,7 +335,9 @@ router.delete('/pessoas/:id', (req, res) => pessoaController.exclui(req, res));
  */
 router.get('/pessoas/:estudanteId/matriculas', (req, res) => pessoaController.pegaMatriculasAtivas(req, res));
 router.get('/pessoas/:estudanteId/matriculas/todos', (req, res) => pessoaController.pegaTodasAsMatriculas(req, res));
+router.get('/pessoas/:estudanteId/matriculas/confirmadas', (req, res) => matriculaController.pegaMatriculasPorEstudante(req, res));
 router.get('/pessoas/:estudanteId/matriculas/:id', (req, res) => matriculaController.pegaUm(req, res));
+
 router.post('/pessoas/:estudanteId/matriculas', (req, res) => matriculaController.criaNovo(req, res));
 
 module.exports = router;
