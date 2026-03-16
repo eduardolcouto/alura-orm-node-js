@@ -56,7 +56,7 @@ const router = Router();
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.get('/cursos', (req, res) => cursoController.pegaTodosOsRegistros(req, res));
+router.get('/cursos', (req, res) => cursoController.pegaCursos(req, res));
 
 /**
  * @swagger
