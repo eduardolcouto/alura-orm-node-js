@@ -25,6 +25,15 @@ class MatriculaController extends Controller {
                  return res.status(500).json({ error: error.message });
             }
         }
+
+    async contaMatriculasPorCurso(_req, res) {
+        try {
+            const contagem = await matriculaServices.contaMatriculasPorCurso();
+            return res.status(200).json(contagem);
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
+    }
 }
 
 module.exports = MatriculaController;

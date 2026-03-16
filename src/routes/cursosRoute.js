@@ -1,7 +1,9 @@
 const { Router } = require('express');
 const CursoController = require('../controllers/CursoController.js');
+const MatriculaController = require('../controllers/MatriculaController.js');
 
 const cursoController = new CursoController();
+const matriculaController = new MatriculaController();
 
 const router = Router();
 
@@ -159,6 +161,34 @@ router.get('/cursos', (req, res) => cursoController.pegaCursos(req, res));
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
+/**
+ * @swagger
+ * /cursos/matriculas/confirmadas:
+ *   get:
+ *     summary: Retorna a contagem de matriculados agrupada por curso
+ *     tags: [Cursos]
+ *     responses:
+ *       200:
+ *         description: Lista com a contagem de matriculados por curso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   curso_id:
+ *                     type: integer
+ *                   matriculados:
+ *                     type: integer
+ *       500:
+ *         description: Erro interno
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+router.get('/cursos/matriculas/confirmadas', (req, res) => matriculaController.contaMatriculasPorCurso(req, res));
 router.get('/cursos/:id', (req, res) => cursoController.pegaUmPorId(req, res));
 router.post('/cursos', (req, res) => cursoController.criaNovo(req, res));
 router.put('/cursos/:id', (req, res) => cursoController.atualiza(req, res));
